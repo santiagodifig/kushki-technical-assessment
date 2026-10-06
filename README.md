@@ -46,7 +46,3 @@ Crea un Web Service desde este repositorio, con Python 3, build command `pip ins
 Usa únicamente tarjetas de prueba. Token generado no significa pago aprobado. La aplicación distingue aprobación, solicitud rechazada, error de autorización y resultado incierto. Ante timeout o respuesta inesperada, bloquea el botón en la página actual y pide verificar la transacción antes de reintentar. Recargar la página no resuelve un resultado incierto.
 
 Es una demostración UAT. No incluye persistencia de órdenes, conciliación automática, webhooks, idempotencia de cargos ni flujo adicional OTP/3DS. Si el SDK solicita validación adicional, se detiene antes del cargo. No está preparada para producción.
-
-### Apoyo de IA
-
-Se utilizó IA como apoyo para generar y revisar código y documentación. El candidato realizó la configuración de UAT, las pruebas, la validación de respuestas y el seguimiento con soporte.
