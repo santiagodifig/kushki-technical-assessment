@@ -1,0 +1,636 @@
+{
+  "info": {
+    "_postman_id": "da2dc360-f240-46ea-85f0-9a12175df62e",
+    "name": "Kushki UAT - Ej 2",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58720682",
+    "_collection_link": "https://go.postman.co/collection/58720682-da2dc360-f240-46ea-85f0-9a12175df62e?source=collection_link",
+    "description": "Ejercicio II — Kushki UAT, México. Cuatro solicitudes y ejemplos de respuestas obtenidas en pruebas. Configura privateMerchantId con tu credencial privada UAT únicamente en tu entorno local de Postman. Los ejemplos guardados son evidencia histórica: para ejecutar otro cargo genera un token nuevo y usa el ticket del nuevo cargo para su anulación. Los códigos de los primeros tres ejemplos se corrigieron a 201 conforme a las capturas de las respuestas originales; Postman los había guardado como 200."
+  },
+  "item": [
+    {
+      "name": "01 - Generar token de tarjeta",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Public-Merchant-Id",
+            "value": "{{publicMerchantId}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"card\": {\r\n    \"name\": \"Santiago Diaz\",\r\n    \"number\": \"5451951574925480\",\r\n    \"expiryMonth\": \"12\",\r\n    \"expiryYear\": \"28\",\r\n    \"cvv\": \"123\"\r\n  },\r\n  \"totalAmount\": 1000,\r\n  \"currency\": \"MXN\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api-uat.kushkipagos.com/card/v1/tokens",
+          "protocol": "https",
+          "host": [
+            "api-uat",
+            "kushkipagos",
+            "com"
+          ],
+          "path": [
+            "card",
+            "v1",
+            "tokens"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "01 - Token generado - 201",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Public-Merchant-Id",
+                "value": "{{publicMerchantId}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"card\": {\r\n    \"name\": \"Santiago Diaz\",\r\n    \"number\": \"5451951574925480\",\r\n    \"expiryMonth\": \"12\",\r\n    \"expiryYear\": \"28\",\r\n    \"cvv\": \"123\"\r\n  },\r\n  \"totalAmount\": 1000,\r\n  \"currency\": \"MXN\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://api-uat.kushkipagos.com/card/v1/tokens",
+              "protocol": "https",
+              "host": [
+                "api-uat",
+                "kushkipagos",
+                "com"
+              ],
+              "path": [
+                "card",
+                "v1",
+                "tokens"
+              ]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": ":status",
+              "value": "201"
+            },
+            {
+              "key": "date",
+              "value": "Mon, 05 Oct 2026 23:02:11 GMT"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json"
+            },
+            {
+              "key": "content-length",
+              "value": "44"
+            },
+            {
+              "key": "cf-ray",
+              "value": "a4600d66480f6c37-DFW"
+            },
+            {
+              "key": "cf-cache-status",
+              "value": "DYNAMIC"
+            },
+            {
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "key": "server",
+              "value": "cloudflare"
+            },
+            {
+              "key": "strict-transport-security",
+              "value": "max-age=31536000; includeSubDomains; preload"
+            },
+            {
+              "key": "via",
+              "value": "1.1 f308b5752d1c7fdf6de882c013facd5c.cloudfront.net (CloudFront)"
+            },
+            {
+              "key": "access-control-allow-credentials",
+              "value": "true"
+            },
+            {
+              "key": "x-amz-apigw-id",
+              "value": "Eyvh5GLRoAMEntw="
+            },
+            {
+              "key": "x-amz-cf-id",
+              "value": "DSvYFWPOQrMN9-hGyoavQyjg1Iq8jEtDgY9QSLhOayXzq8Gc4AH1cQ=="
+            },
+            {
+              "key": "x-amz-cf-pop",
+              "value": "DFW59-P8"
+            },
+            {
+              "key": "x-amzn-requestid",
+              "value": "d8d216be-e85a-4e86-9c6e-8e022acf886e"
+            },
+            {
+              "key": "x-amzn-trace-id",
+              "value": "Root=1-6ac42c72-67d5a6a7717a773367ee514c"
+            },
+            {
+              "key": "x-cache",
+              "value": "Miss from cloudfront"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"token\": \"4ce7acbfafbe49f3ae740e7a7cdd19b5\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "02 - Realizar cargo",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Private-Merchant-Id",
+            "value": "{{privateMerchantId}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"token\": \"4ce7acbfafbe49f3ae740e7a7cdd19b5\",\r\n  \"amount\": {\r\n    \"currency\": \"MXN\",\r\n    \"subtotalIva\": 0,\r\n    \"subtotalIva0\": 1000,\r\n    \"iva\": 0,\r\n    \"ice\": 0\r\n  },\r\n  \"metadata\": {\r\n    \"proyecto\": \"TiagoLunch - Ejercicio 2\"\r\n  }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api-uat.kushkipagos.com/card/v1/charges",
+          "protocol": "https",
+          "host": [
+            "api-uat",
+            "kushkipagos",
+            "com"
+          ],
+          "path": [
+            "card",
+            "v1",
+            "charges"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "02 - Cargo aprobado - 201",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Private-Merchant-Id",
+                "value": "{{privateMerchantId}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"token\": \"4ce7acbfafbe49f3ae740e7a7cdd19b5\",\r\n  \"amount\": {\r\n    \"currency\": \"MXN\",\r\n    \"subtotalIva\": 0,\r\n    \"subtotalIva0\": 1000,\r\n    \"iva\": 0,\r\n    \"ice\": 0\r\n  },\r\n  \"metadata\": {\r\n    \"proyecto\": \"TiagoLunch - Ejercicio 2\"\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://api-uat.kushkipagos.com/card/v1/charges",
+              "protocol": "https",
+              "host": [
+                "api-uat",
+                "kushkipagos",
+                "com"
+              ],
+              "path": [
+                "card",
+                "v1",
+                "charges"
+              ]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": ":status",
+              "value": "201"
+            },
+            {
+              "key": "date",
+              "value": "Mon, 05 Oct 2026 23:12:49 GMT"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json"
+            },
+            {
+              "key": "content-length",
+              "value": "99"
+            },
+            {
+              "key": "cf-ray",
+              "value": "a4601cff99c61e3c-DFW"
+            },
+            {
+              "key": "cf-cache-status",
+              "value": "DYNAMIC"
+            },
+            {
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "key": "server",
+              "value": "cloudflare"
+            },
+            {
+              "key": "strict-transport-security",
+              "value": "max-age=31536000; includeSubDomains; preload"
+            },
+            {
+              "key": "via",
+              "value": "1.1 0d783ae9264e50e9802c53feb09fcf44.cloudfront.net (CloudFront)"
+            },
+            {
+              "key": "access-control-allow-credentials",
+              "value": "true"
+            },
+            {
+              "key": "x-amz-apigw-id",
+              "value": "EyxFtFL_oAMEdgg="
+            },
+            {
+              "key": "x-amz-cf-id",
+              "value": "n6ckgigww_Y7H5LgkkrAIPMybROYfys0EC3xPiNod_Jwn3XTDeXl2Q=="
+            },
+            {
+              "key": "x-amz-cf-pop",
+              "value": "DFW59-P8"
+            },
+            {
+              "key": "x-amzn-requestid",
+              "value": "e5d80b0d-f6bb-45a3-a37b-34303518ab76"
+            },
+            {
+              "key": "x-amzn-trace-id",
+              "value": "Root=1-6ac42ef0-6494bad1317174dc6d60ccab"
+            },
+            {
+              "key": "x-cache",
+              "value": "Miss from cloudfront"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"ticketNumber\": \"607570044219985216\",\n  \"transactionReference\": \"8d10383c-98b6-4873-a1a0-a64c26be8172\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "03 - Anular transacción",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Private-Merchant-Id",
+            "value": "{{privateMerchantId}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "https://api-uat.kushkipagos.com/v1/charges/607570044219985216",
+          "protocol": "https",
+          "host": [
+            "api-uat",
+            "kushkipagos",
+            "com"
+          ],
+          "path": [
+            "v1",
+            "charges",
+            "607570044219985216"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "03 - Anulación exitosa - 201",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Private-Merchant-Id",
+                "value": "{{privateMerchantId}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "https://api-uat.kushkipagos.com/v1/charges/607570044219985216",
+              "protocol": "https",
+              "host": [
+                "api-uat",
+                "kushkipagos",
+                "com"
+              ],
+              "path": [
+                "v1",
+                "charges",
+                "607570044219985216"
+              ]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": ":status",
+              "value": "201"
+            },
+            {
+              "key": "date",
+              "value": "Mon, 05 Oct 2026 23:18:48 GMT"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json"
+            },
+            {
+              "key": "content-length",
+              "value": "99"
+            },
+            {
+              "key": "cf-ray",
+              "value": "a46025bfc8b0b9ae-DFW"
+            },
+            {
+              "key": "cf-cache-status",
+              "value": "DYNAMIC"
+            },
+            {
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "key": "server",
+              "value": "cloudflare"
+            },
+            {
+              "key": "strict-transport-security",
+              "value": "max-age=31536000; includeSubDomains; preload"
+            },
+            {
+              "key": "via",
+              "value": "1.1 a9f98893f7a1d623b9cace367b0b4afe.cloudfront.net (CloudFront)"
+            },
+            {
+              "key": "access-control-allow-credentials",
+              "value": "true"
+            },
+            {
+              "key": "x-amz-apigw-id",
+              "value": "Eyx9tHREoAMEm5g="
+            },
+            {
+              "key": "x-amz-cf-id",
+              "value": "-Pi6Afxz0cwNjMH2_qSMiJr6p1sJLJ2xrBu6Fha8DEiylG52wiL5oQ=="
+            },
+            {
+              "key": "x-amz-cf-pop",
+              "value": "DFW59-P8"
+            },
+            {
+              "key": "x-amzn-requestid",
+              "value": "f4e20a72-3ccc-4066-8dcf-290215676393"
+            },
+            {
+              "key": "x-amzn-trace-id",
+              "value": "Root=1-6ac43057-47a460b251fc39276608b4c6"
+            },
+            {
+              "key": "x-cache",
+              "value": "Miss from cloudfront"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"ticketNumber\": \"661791242327611072\",\n  \"transactionReference\": \"550063be-c35e-4240-9c54-3058847a6bdb\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "04 - Consultar transacciones",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Private-Merchant-Id",
+            "value": "{{privateMerchantId}}"
+          }
+        ],
+        "url": {
+          "raw": "https://api-uat.kushkipagos.com/analytics/v2/transactions-list?from=2026-10-05T00:00:00&to=2026-10-06T23:59:59&limit=20&offset=0",
+          "protocol": "https",
+          "host": [
+            "api-uat",
+            "kushkipagos",
+            "com"
+          ],
+          "path": [
+            "analytics",
+            "v2",
+            "transactions-list"
+          ],
+          "query": [
+            {
+              "key": "from",
+              "value": "2026-10-05T00:00:00"
+            },
+            {
+              "key": "to",
+              "value": "2026-10-06T23:59:59"
+            },
+            {
+              "key": "limit",
+              "value": "20"
+            },
+            {
+              "key": "offset",
+              "value": "0"
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "04 - Consulta de transacciones - 200",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Private-Merchant-Id",
+                "value": "{{privateMerchantId}}"
+              }
+            ],
+            "url": {
+              "raw": "https://api-uat.kushkipagos.com/analytics/v2/transactions-list?from=2026-10-05T00:00:00&to=2026-10-06T23:59:59&limit=20&offset=0",
+              "protocol": "https",
+              "host": [
+                "api-uat",
+                "kushkipagos",
+                "com"
+              ],
+              "path": [
+                "analytics",
+                "v2",
+                "transactions-list"
+              ],
+              "query": [
+                {
+                  "key": "from",
+                  "value": "2026-10-05T00:00:00"
+                },
+                {
+                  "key": "to",
+                  "value": "2026-10-06T23:59:59"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": ":status",
+              "value": "200"
+            },
+            {
+              "key": "date",
+              "value": "Tue, 06 Oct 2026 01:41:41 GMT"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json"
+            },
+            {
+              "key": "access-control-allow-credentials",
+              "value": "true"
+            },
+            {
+              "key": "x-amzn-requestid",
+              "value": "640dee5b-0213-4079-99c5-005b0bf1210b"
+            },
+            {
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "key": "x-amz-apigw-id",
+              "value": "EzG5VHoGoAMEabg="
+            },
+            {
+              "key": "x-amzn-trace-id",
+              "value": "Root=1-6ac451d4-516eff636652427759d3a94f;Sampled=1;Lineage=2:c113ce1e:0"
+            },
+            {
+              "key": "x-cache",
+              "value": "Miss from cloudfront"
+            },
+            {
+              "key": "via",
+              "value": "1.1 3dba39a7b54d7d7ff32e454cf7ed0bee.cloudfront.net (CloudFront)"
+            },
+            {
+              "key": "x-amz-cf-pop",
+              "value": "DFW59-P8"
+            },
+            {
+              "key": "x-amz-cf-id",
+              "value": "bTRnksI1d50wKy5WCeQBys_QYV-pmPN7PhNe9wD8EyrwvVU3NoaK-A=="
+            },
+            {
+              "key": "cf-cache-status",
+              "value": "DYNAMIC"
+            },
+            {
+              "key": "strict-transport-security",
+              "value": "max-age=31536000; includeSubDomains; preload"
+            },
+            {
+              "key": "content-encoding",
+              "value": "gzip"
+            },
+            {
+              "key": "server",
+              "value": "cloudflare"
+            },
+            {
+              "key": "cf-ray",
+              "value": "a460f710ded8244e-DFW"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"total\": 4,\n  \"data\": [\n    {\n      \"masked_credit_card\": \"545195XXXXXX5480\",\n      \"created\": \"2026-10-05T22:23:26.000Z\",\n      \"metadata\": \"{\\\"proyecto\\\":\\\"TiagoLunch Bonus UAT\\\"}\",\n      \"approved_transaction_amount\": 1000,\n      \"contact_details\": {},\n      \"country\": \"Mexico\",\n      \"credential_alias\": \"TIAGOLUNCH Branch Mexico\",\n      \"credential_id\": \"{{privateMerchantId}}\",\n      \"currency_code\": \"MXN\",\n      \"customer_merchant_id\": \"20000000100502286000\",\n      \"ice_value\": 0,\n      \"iva_value\": 0,\n      \"merchant_id\": \"20000000105032490000\",\n      \"merchant_name\": \"TIAGOLUNCH Branch Mexico\",\n      \"payment_method\": \"CARD\",\n      \"payment_submethod\": \"CARD NO PRESENT\",\n      \"processor_id\": \"6000000000179122947077740510\",\n      \"processor_name\": \"Kushki Acquirer Processor\",\n      \"processor_type\": \"aggregator_formal\",\n      \"public_credential_id\": \"afc9e1699f3b472a954d663bce6e528c\",\n      \"request_amount\": 1000,\n      \"response_code\": \"000\",\n      \"response_text\": \"Transacción aprobada\",\n      \"subtotal_iva\": 0,\n      \"subtotal_iva0\": 1000,\n      \"ticket_number\": \"484328618660785005\",\n      \"token\": \"5e9d2388419f4aab8154e683b5284727\",\n      \"transaction_id\": \"159540261465005342\",\n      \"transaction_reference\": \"4b08f025-f598-4d51-93bc-d1edd3a3a195\",\n      \"transaction_status\": \"APPROVED\",\n      \"transaction_type\": \"SALE\",\n      \"acquirer_bank\": \"Kushki\",\n      \"approval_code\": \"000000\",\n      \"bin_card\": \"54519515\",\n      \"card_country\": \"Ecuador\",\n      \"card_country_code\": \"EC\",\n      \"card_holder_name\": \"Santiago Diaz\",\n      \"card_type\": \"credit\",\n      \"foreign_card\": true,\n      \"issuing_bank\": \"Banco de la Produccion S.A. (PRODUBANCO)\",\n      \"last_four_digits\": \"5480\",\n      \"payment_brand\": \"Mastercard\",\n      \"processor_code\": \"000\",\n      \"processor_merchant_id\": \"12345\",\n      \"processor_message\": \"Transacción aprobada\",\n      \"transaction_card_id\": \"6420c5bd-5a3f-45d2-8ac4-88de7b09958d\"\n    },\n    {\n      \"masked_credit_card\": \"434900XXXXXX7015\",\n      \"created\": \"2026-10-05T22:25:04.000Z\",\n      \"metadata\": \"{\\\"proyecto\\\":\\\"TiagoLunch Bonus UAT\\\"}\",\n      \"approved_transaction_amount\": 0,\n      \"contact_details\": {},\n      \"country\": \"Mexico\",\n      \"credential_alias\": \"TIAGOLUNCH Branch Mexico\",\n      \"credential_id\": \"{{privateMerchantId}}\",\n      \"currency_code\": \"MXN\",\n      \"customer_merchant_id\": \"20000000100502286000\",\n      \"ice_value\": 0,\n      \"iva_value\": 0,\n      \"merchant_id\": \"20000000105032490000\",\n      \"merchant_name\": \"TIAGOLUNCH Branch Mexico\",\n      \"payment_method\": \"CARD\",\n      \"payment_submethod\": \"CARD NO PRESENT\",\n      \"processor_id\": \"6000000000179122947077740510\",\n      \"processor_name\": \"Kushki Acquirer Processor\",\n      \"processor_type\": \"aggregator_formal\",\n      \"public_credential_id\": \"afc9e1699f3b472a954d663bce6e528c\",\n      \"request_amount\": 1000,\n      \"response_code\": \"017\",\n      \"response_text\": \"Tarjeta no válida\",\n      \"subtotal_iva\": 0,\n      \"subtotal_iva0\": 1000,\n      \"token\": \"4466dcf9e53f46f8a4539d6488c7c5a2\",\n      \"transaction_id\": \"364744576425927960\",\n      \"transaction_reference\": \"15783a86-a706-4285-a15c-0db77ace39f8\",\n      \"transaction_status\": \"DECLINED\",\n      \"transaction_type\": \"SALE\",\n      \"acquirer_bank\": \"Kushki\",\n      \"bin_card\": \"43490030\",\n      \"card_country\": \"Ecuador\",\n      \"card_country_code\": \"EC\",\n      \"card_holder_name\": \"Santiago Diaz\",\n      \"card_type\": \"credit\",\n      \"foreign_card\": true,\n      \"issuing_bank\": \"BANCO DE LA PRODUCCION S.A. (PRODUBANCO)\",\n      \"last_four_digits\": \"7015\",\n      \"payment_brand\": \"Visa\",\n      \"processor_merchant_id\": \"12345\",\n      \"processor_message\": \"Tarjeta no válida\",\n      \"transaction_card_id\": \"2be9e954-c3d1-4f72-8be4-3057e8512bf2\"\n    },\n    {\n      \"masked_credit_card\": \"545195XXXXXX5480\",\n      \"created\": \"2026-10-05T23:12:49.000Z\",\n      \"metadata\": \"{\\\"proyecto\\\":\\\"TiagoLunch - Ejercicio 2\\\"}\",\n      \"approved_transaction_amount\": 1000,\n      \"contact_details\": {},\n      \"country\": \"Mexico\",\n      \"credential_alias\": \"TIAGOLUNCH Branch Mexico\",\n      \"credential_id\": \"{{privateMerchantId}}\",\n      \"currency_code\": \"MXN\",\n      \"customer_merchant_id\": \"20000000100502286000\",\n      \"ice_value\": 0,\n      \"iva_value\": 0,\n      \"merchant_id\": \"20000000105032490000\",\n      \"merchant_name\": \"TIAGOLUNCH Branch Mexico\",\n      \"payment_method\": \"CARD\",\n      \"payment_submethod\": \"CARD NO PRESENT\",\n      \"processor_id\": \"6000000000179122947077740510\",\n      \"processor_name\": \"Kushki Acquirer Processor\",\n      \"processor_type\": \"aggregator_formal\",\n      \"public_credential_id\": \"afc9e1699f3b472a954d663bce6e528c\",\n      \"request_amount\": 1000,\n      \"response_code\": \"000\",\n      \"response_text\": \"Transacción aprobada\",\n      \"subtotal_iva\": 0,\n      \"subtotal_iva0\": 1000,\n      \"ticket_number\": \"607570044219985216\",\n      \"token\": \"4ce7acbfafbe49f3ae740e7a7cdd19b5\",\n      \"transaction_id\": \"994142358462825480\",\n      \"transaction_reference\": \"8d10383c-98b6-4873-a1a0-a64c26be8172\",\n      \"transaction_status\": \"APPROVED\",\n      \"transaction_type\": \"SALE\",\n      \"acquirer_bank\": \"Kushki\",\n      \"approval_code\": \"000000\",\n      \"bin_card\": \"54519515\",\n      \"card_country\": \"Ecuador\",\n      \"card_country_code\": \"EC\",\n      \"card_holder_name\": \"Santiago Diaz\",\n      \"card_type\": \"credit\",\n      \"foreign_card\": true,\n      \"issuing_bank\": \"Banco de la Produccion S.A. (PRODUBANCO)\",\n      \"last_four_digits\": \"5480\",\n      \"payment_brand\": \"Mastercard\",\n      \"processor_code\": \"000\",\n      \"processor_merchant_id\": \"12345\",\n      \"processor_message\": \"Transacción aprobada\",\n      \"transaction_card_id\": \"6420c5bd-5a3f-45d2-8ac4-88de7b09958d\"\n    },\n    {\n      \"masked_credit_card\": \"545195XXXXXX5480\",\n      \"created\": \"2026-10-05T23:18:48.399Z\",\n      \"metadata\": \"{\\\"proyecto\\\":\\\"TiagoLunch - Ejercicio 2\\\"}\",\n      \"approved_transaction_amount\": 1000,\n      \"contact_details\": {\n        \"email\": \"santiago.di.fig@gmail.com\"\n      },\n      \"country\": \"Mexico\",\n      \"credential_alias\": \"TIAGOLUNCH Branch Mexico\",\n      \"credential_id\": \"{{privateMerchantId}}\",\n      \"credential_metadata\": null,\n      \"currency_code\": \"MXN\",\n      \"customer_merchant_id\": \"20000000100502286000\",\n      \"ice_value\": 0,\n      \"iva_value\": 0,\n      \"merchant_id\": \"20000000105032490000\",\n      \"merchant_name\": \"TIAGOLUNCH Branch Mexico\",\n      \"payment_method\": \"CARD\",\n      \"payment_submethod\": \"CARD NO PRESENT\",\n      \"processor_id\": \"6000000000179122947077740510\",\n      \"processor_name\": \"Kushki Acquirer Processor\",\n      \"processor_type\": \"aggregator_formal\",\n      \"public_credential_id\": \"afc9e1699f3b472a954d663bce6e528c\",\n      \"request_amount\": 1000,\n      \"response_code\": \"000\",\n      \"response_text\": \"Transacción aprobada\",\n      \"sale_approval_code\": \"000000\",\n      \"sale_ticket_number\": \"607570044219985216\",\n      \"sale_transaction_type\": \"SALE\",\n      \"subtotal_iva\": 0,\n      \"subtotal_iva0\": 1000,\n      \"ticket_number\": \"661791242327611072\",\n      \"transaction_id\": \"994142358462825480\",\n      \"transaction_reference\": \"f0a35106-7b47-4d9c-9125-2d1ef6f95abf\",\n      \"transaction_status\": \"APPROVED\",\n      \"transaction_type\": \"VOID\",\n      \"tax_id\": null,\n      \"approval_code\": null,\n      \"bin_card\": \"545195\",\n      \"card_country\": \"Ecuador\",\n      \"card_country_code\": \"EC\",\n      \"card_holder_name\": \"Santiago Diaz\",\n      \"card_type\": \"Credit\",\n      \"foreign_card\": true,\n      \"historical\": [\n        {\n          \"country\": \"Mexico\",\n          \"public_credential_id\": \"afc9e1699f3b472a954d663bce6e528c\",\n          \"subtotal_iva\": 0,\n          \"card_country\": \"Ecuador\",\n          \"nit\": \"PRUEBA123457\",\n          \"processor_name\": \"Kushki Acquirer Processor\",\n          \"sale_ticket_number\": \"607570044219985216\",\n          \"response_text\": \"Transacción aprobada\",\n          \"transaction_reference\": \"550063be-c35e-4240-9c54-3058847a6bdb\",\n          \"unique_code\": null,\n          \"mcc_code\": \"0742\",\n          \"terminal_id\": \"1791229470777\",\n          \"payment_method\": \"card\",\n          \"transaction_id\": \"1791242327602112247\",\n          \"visibility\": \"visible\",\n          \"created\": 1791242328084,\n          \"sale_approval_code\": \"000000\",\n          \"iva_value\": 0,\n          \"merchant_name\": \"TIAGOLUNCH Branch Mexico\",\n          \"sale_transaction_type\": \"SALE\",\n          \"transaction_type\": \"VOID\",\n          \"tax_id\": null,\n          \"sync_mode\": \"online\",\n          \"customer_merchant_id\": \"20000000100502286000\",\n          \"credential_metadata\": null,\n          \"subtotal_iva0\": 1000,\n          \"transaction_status\": \"INITIALIZED\",\n          \"response_code\": \"000\",\n          \"processor_type\": \"aggregator_formal\",\n          \"social_reason\": null,\n          \"card_holder_name\": \"Santiago Diaz\",\n          \"payment_brand\": \"Mastercard\",\n          \"request_amount\": 1000,\n          \"processor_merchant_id\": \"12345\",\n          \"merchant_id\": \"20000000105032490000\",\n          \"approved_transaction_amount\": 1000,\n          \"merchant_category\": null,\n          \"currency_code\": \"MXN\",\n          \"transaction_card_id\": null,\n          \"masked_credit_card\": \"545195XXXXXX5480\",\n          \"processor_id\": \"6000000000179122947077740510\",\n          \"foreign_card\": true,\n          \"last_four_digits\": \"5480\",\n          \"email\": \"santiago.di.fig@gmail.com\",\n          \"contact_person\": \"Santiago Alejandro Diaz Figueroa\",\n          \"consortium_name\": null,\n          \"card_type\": \"Credit\",\n          \"ticket_number\": \"661791242327611072\",\n          \"card_country_code\": \"EC\",\n          \"credential_alias\": \"TIAGOLUNCH Branch Mexico\",\n          \"processor_bank_name\": \"0032~BANCO INTERNACIONAL\",\n          \"bin_card\": \"545195\",\n          \"ice_value\": 0,\n          \"partial_void\": false,\n          \"created_iso\": \"2026-10-05T23:18:48.084Z\",\n          \"credential_id\": \"caed27ca538f46bb8da91483eaa27fd8\"\n        }\n      ],\n      \"last_four_digits\": \"5480\",\n      \"payment_brand\": \"Mastercard\",\n      \"processor_code\": \"000\",\n      \"processor_merchant_id\": \"12345\",\n      \"processor_message\": \"Transacción aprobada\",\n      \"recap\": null,\n      \"transaction_card_id\": null,\n      \"void_ticket_number\": \"661791242327611072\"\n    }\n  ]\n}"
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "publicMerchantId",
+      "value": "afc9e1699f3b472a954d663bce6e528c",
+      "type": "string"
+    },
+    {
+      "key": "privateMerchantId",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
