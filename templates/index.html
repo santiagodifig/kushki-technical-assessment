@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TiagoLunch — Pago de prueba</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      padding: 24px;
+    }
+    main {
+      max-width: 420px;
+      margin: 30px auto;
+      padding: 24px;
+      background: white;
+      border-radius: 12px;
+    }
+    label {
+      display: block;
+      margin-top: 16px;
+    }
+    input {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #999;
+      border-radius: 6px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 24px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>TiagoLunch</h1>
+    <p>Pago único — Ambiente de pruebas UAT. Usa únicamente tarjetas de prueba.</p>
+    <h2>$1,000.00 MXN</h2>
+
+    <div id="card-fields">
+      <label for="card-name">Nombre del titular</label>
+      <input id="card-name" type="text" autocomplete="cc-name">
+
+      <label for="card-number">Número de tarjeta</label>
+      <input id="card-number" type="text"
+             inputmode="numeric" autocomplete="cc-number">
+
+      <label for="expiry-month">Mes de vencimiento (MM)</label>
+      <input id="expiry-month" type="text"
+             inputmode="numeric" maxlength="2">
+
+      <label for="expiry-year">Año de vencimiento (AA)</label>
+      <input id="expiry-year" type="text"
+             inputmode="numeric" maxlength="2">
+
+      <label for="card-cvv">CVV</label>
+      <input id="card-cvv" type="password"
+             inputmode="numeric" maxlength="4"
+             autocomplete="cc-csc">
+    </div>
+
+    <button id="pay-button" type="button" disabled>
+      Cargando Kushki.js…
+    </button>
+    <p id="payment-result" role="status"></p>
+  </main>
+
+  <script src="https://cdn.kushkipagos.com/kushki.min.js"></script>
+
+<script>
+  const button = document.getElementById("pay-button");
+  const result = document.getElementById("payment-result");
+  let resultUnknown = false;
+  const value = (id) => document.getElementById(id).value.trim();
+
+  if (typeof Kushki === "undefined") {
+    result.textContent = "No se pudo cargar Kushki.js. Actualiza la página.";
+  } else {
+    const kushki = new Kushki({
+      merchantId: {{ public_merchant_id | tojson }},
+      inTestEnvironment: true
+    });
+
+    button.disabled = false;
+    button.textContent = "Pagar $1,000 MXN — Prueba UAT";
+
+    button.addEventListener("click", () => {
+      if (button.disabled || resultUnknown) return;
+      const card = {
+        name: value("card-name"),
+        number: value("card-number").replace(/\s/g, ""),
+        expiryMonth: value("expiry-month"),
+        expiryYear: value("expiry-year"),
+        cvc: value("card-cvv")
+      };
+
+      if (Object.values(card).some((field) => !field)) {
+        result.textContent = "Completa todos los campos.";
+        return;
+      }
+
+      button.disabled = true;
+      result.textContent = "Solicitando token a Kushki…";
+
+      try {
+        kushki.requestToken({
+          amount: "1000",
+          currency: "MXN",
+          card: card
+        }, (response) => {
+          button.disabled = false;
+          document.getElementById("card-cvv").value = "";
+
+          if (response.code || !response.token) {
+            result.textContent =
+              "No se generó el token. " +
+              (response.code || "") + " — " +
+              (response.message || response.error || "Respuesta inesperada.");
+            return;
+          }
+
+          if (response.secureService) {
+            result.textContent =
+                "Token recibido. Requiere validación adicional antes del cargo.";
+            return;
+            }
+
+            button.disabled = true;
+            result.textContent = "Enviando token al servidor de Python…";
+
+            fetch("/checkout", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                token: response.token
+            })
+            })
+            .then(async (respuesta) => {
+                const datos = await respuesta.json();
+
+                if (!respuesta.ok) {
+                throw new Error(datos.message || "Error del servidor.");
+                }
+
+                result.textContent = datos.message;
+                resultUnknown = datos.status === "unknown";
+            })
+            .catch((error) => {
+                resultUnknown = true;
+                result.textContent =
+                "Resultado sin confirmar. Consulta la transacción en Kushki antes de reintentar. " + error.message;
+            })
+            .finally(() => {
+                button.disabled = resultUnknown;
+                if (resultUnknown) button.textContent = "Verifica la transacción antes de reintentar";
+            });
+        });
+      } catch (error) {
+        button.disabled = false;
+        result.textContent = "No se pudo iniciar la solicitud del token.";
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
